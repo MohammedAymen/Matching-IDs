@@ -5,10 +5,10 @@ from CompareFace import CompareFace
 from scanner import detect_id_card
 from rotation import detect_orientation
 class Comp:
-    def __init__(self, image1_path, image2_path):
+    def __init__(self, imageapp, imageSystem):
         pytesseract.pytesseract.tesseract_cmd = r'D:\my stuff\OCR\tesseract.exe'
-        self.image1_path = image1_path
-        self.image2_path = image2_path
+        self.imageapp = imageapp
+        self.imageSystem = imageSystem
     
     def extract_ara_num(self, image):
         try:
@@ -48,12 +48,12 @@ class Comp:
             print("Error occurred during image processing:", e)
             return None
         
-    def Check(self, image1_path, image2_path):
+    def Check(self):
         try:
             #image1 = cv2.imread(image1_path)
             #image2 = cv2.imread(image2_path)
-            ara_num_res1 = self.extract_ara_num(image1_path)
-            ara_num_res2 = self.extract_ara_num(image2_path)
+            ara_num_res1 = self.extract_ara_num(self.imageapp)
+            ara_num_res2 = self.extract_ara_num(self.imageSystem)
             if ara_num_res1 is None or ara_num_res2 is None:
                 print("Error: Unable to extract Arabic numbers from images.")
                 return None
@@ -69,7 +69,7 @@ class Comp:
             print("ID two",english_number2)
             
             if english_number1 == english_number2:
-                Match = CompareFace(image1_path, image2_path)
+                Match = CompareFace(self.imageapp, self.imageSystem)
                 if Match:
                     return True
             return False
@@ -77,11 +77,3 @@ class Comp:
             print("Error occurred during check:", e)
             return None
 
-image1_path = r"D:\final project face recognition\data set\system\6.jpg"
-image2_path = r"D:\final project face recognition\data set\users captured\6.jpg"
-
-comp_instance = Comp(image1_path, image2_path)
-
-result = comp_instance.Check(image1_path, image2_path)
-
-print("Result:", result)

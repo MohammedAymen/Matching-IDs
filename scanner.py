@@ -3,8 +3,8 @@ import imutils
 from transform import four_point_transform
 
 #that function to detect id card and reshape the image into rounded the id 
-def detect_id_card(image_path):
-        image = cv2.imread(image_path)
+def detect_id_card(image):
+       #image = cv2.imread(image_path)
         ratio = image.shape[0] / 500.0
         orig = image.copy()
         image = imutils.resize(image, height=500)
