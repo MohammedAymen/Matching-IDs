@@ -1,4 +1,7 @@
-pip install python-opencv
-pip install imutils
-pip install pytesseract
-pip install numpy
+opencv-python
+imutils
+pytesseract
+numpy
+deepface
+tf-keras
+Flask
