@@ -5,3 +5,4 @@ numpy
 deepface
 tf-keras
 Flask
+dlib
