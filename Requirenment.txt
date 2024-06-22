@@ -5,4 +5,4 @@ numpy
 deepface
 tf-keras
 Flask
-dlib
+facenet-pytorch
