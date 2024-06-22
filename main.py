@@ -6,7 +6,7 @@ from scanner import detect_id_card
 from rotation import detect_orientation
 class Comp:
     def __init__(self, imageapp, imageSystem):
-        pytesseract.pytesseract.tesseract_cmd = r'D:\my stuff\OCR\tesseract.exe'
+        pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
         self.imageapp = imageapp
         self.imageSystem = imageSystem
     
