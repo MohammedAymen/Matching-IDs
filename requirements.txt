@@ -4,4 +4,5 @@ pytesseract
 numpy
 deepface
 tf-keras
-
+Flask
+facenet-pytorch
