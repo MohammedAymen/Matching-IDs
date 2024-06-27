@@ -1,4 +1,0 @@
-pip install python-opencv
-pip install imutils
-pip install pytesseract
-pip install numpy

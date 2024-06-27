@@ -1,0 +1,7 @@
+opencv-python
+imutils
+pytesseract
+numpy
+deepface
+tf-keras
+
