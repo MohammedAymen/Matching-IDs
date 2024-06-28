@@ -74,5 +74,3 @@ class Comp:
             print("Error occurred during check:", e)
             return None
 
-        finally:
-            gc.collect()  # Force garbage collection to free up memory
