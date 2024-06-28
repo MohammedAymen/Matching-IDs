@@ -20,7 +20,7 @@ class Comp:
             image = image[int(h / 1.8):int(h / 1.08), int(w / 2.8):int(w / 1)]
             copy = image
             count = 0
-            while True:
+            while count < 3:
                 count += 1
                 image = convert_to_gray(image)
                 _, image = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
@@ -32,9 +32,7 @@ class Comp:
                 f_res = ""
                 for i in range(1, len(res) + 1):
                     if i > 1:
-                        temp = res[len(res) - i]
-                        temp += f_res
-                        f_res = temp
+                        f_res = res[len(res) - i] + f_res
                     else:
                         f_res += res[len(res) - i]
                     if len(f_res) == 14:
@@ -49,15 +47,13 @@ class Comp:
             print("Error occurred during image processing:", e)
             return None
         
-    def Check(self):
+    def check(self):
         try:
-            #image1 = cv2.imread(image1_path)
-            #image2 = cv2.imread(image2_path)
             ara_num_res1 = self.extract_ara_num(self.imageapp)
             ara_num_res2 = self.extract_ara_num(self.imageSystem)
-            if ara_num_res1 is None or ara_num_res2 is None:
+            if not ara_num_res1 or not ara_num_res2:
                 print("Error: Unable to extract Arabic numbers from images.")
-                return None
+                return False
             
             arabic_to_english_map = {
                 '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4',
@@ -66,8 +62,8 @@ class Comp:
 
             english_number1 = ''.join(arabic_to_english_map[digit] for digit in ara_num_res1 if digit in arabic_to_english_map)
             english_number2 = ''.join(arabic_to_english_map[digit] for digit in ara_num_res2 if digit in arabic_to_english_map)
-            print("ID one",english_number1)
-            print("ID two",english_number2)
+            print("ID one:", english_number1)
+            print("ID two:", english_number2)
             
             if english_number1 and english_number1 == english_number2:
                 Match = CompareFace(self.imageapp, self.imageSystem)
@@ -78,3 +74,5 @@ class Comp:
             print("Error occurred during check:", e)
             return None
 
+        finally:
+            gc.collect()  # Force garbage collection to free up memory
