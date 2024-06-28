@@ -1,27 +1,28 @@
 import cv2
 import pytesseract
-from filters import gray,increase_contrast,resize_ara_num 
+from filters import preprocess_image,enhance_contrast,convert_to_gray
 from CompareFace import CompareFace
 from scanner import detect_id_card
-from rotation import detect_orientation
+#from rotation import detect_orientation
 class Comp:
     def __init__(self, imageapp, imageSystem):
-        pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
+        #pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
+        pytesseract.pytesseract.tesseract_cmd = r'D:\my stuff\OCR\tesseract.exe'
         self.imageapp = imageapp
         self.imageSystem = imageSystem
     
     def extract_ara_num(self, image):
         try:
             image=detect_id_card(image)
-            image=detect_orientation(image)
-            image = resize_ara_num(image)
+            #image=detect_orientation(image)
+            image = preprocess_image(image)
             h, w, ch = image.shape
             image = image[int(h / 1.8):int(h / 1.08), int(w / 2.8):int(w / 1)]
             copy = image
             count = 0
             while True:
                 count += 1
-                image = gray(image)
+                image = convert_to_gray(image)
                 _, image = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
                 res = pytesseract.image_to_string(image, lang="ara_number_id").split()
                 if res:
@@ -38,9 +39,9 @@ class Comp:
                         f_res += res[len(res) - i]
                     if len(f_res) == 14:
                         return f_res
-                image = increase_contrast(copy)
+                image = enhance_contrast(copy)
                 if count > 1:
-                    image = increase_contrast(image)
+                    image = enhance_contrast(image)
                 if count == 3:
                     return "please re-capture the image"
                 continue
@@ -68,7 +69,7 @@ class Comp:
             print("ID one",english_number1)
             print("ID two",english_number2)
             
-            if english_number1 == english_number2:
+            if english_number1 and english_number1 == english_number2:
                 Match = CompareFace(self.imageapp, self.imageSystem)
                 if Match:
                     return True

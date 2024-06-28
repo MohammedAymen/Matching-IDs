@@ -4,7 +4,7 @@ import cv2
 from main import Comp
 from CompareFace import CompareFace
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
 def receive_images():
@@ -40,18 +40,24 @@ def receive_images():
 
             comp_instance = Comp(imageapp, imageSystem)
             result1 = comp_instance.Check()
-            result2 = CompareFace(imageSystem, imagePers)
-            
-            if result1 and result2:
-                return jsonify({
-                    "status": "success",
-                    "message": "Allowed to register"
-                }), 200
-            else:
+               
+            if not result1:
                 return jsonify({
                     "status": "error",
-                    "message": "Not allowed to register"
+                    "message": "Not the same id like system"
                 }), 400
+            
+            result2 = CompareFace(imageSystem, imagePers)
+            if not result2:
+                return jsonify({
+                    "status": "error",
+                    "message": "Not the same person image"
+                }), 400
+            
+            return jsonify({
+                "status": "success",
+                "message": "Allowed to register"
+            }), 200
         
         except Exception as e:
             return jsonify({
@@ -59,5 +65,5 @@ def receive_images():
                 "message": "Internal server error"
             }), 500
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
