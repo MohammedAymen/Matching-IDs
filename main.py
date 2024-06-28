@@ -47,7 +47,7 @@ class Comp:
             print("Error occurred during image processing:", e)
             return None
         
-    def check(self):
+    def Check(self):
         try:
             ara_num_res1 = self.extract_ara_num(self.imageapp)
             ara_num_res2 = self.extract_ara_num(self.imageSystem)
