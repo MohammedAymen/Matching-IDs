@@ -3,7 +3,7 @@ import cv2
 #to implement face verification 
 def CompareFace(image1, image2):
         try:
-            result = DeepFace.verify(img1_path=image1, img2_path=image2, model_name="Facenet", detector_backend='opencv')
+            result = DeepFace.verify(img1_path=image1, img2_path=image2, model_name="Facenet", detector_backend='fastmtcnn')
             if result['verified']:
                return True   
             else:
